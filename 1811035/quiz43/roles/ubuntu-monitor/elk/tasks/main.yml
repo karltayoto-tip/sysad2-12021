@@ -1,0 +1,35 @@
+---
+# tasks file for roles/ubuntu-monitor/elk
+- name: add gpg key
+  become: yes
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: add source
+  become: yes
+  shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.x.list
+
+- name: update ubuntu
+  apt:
+    upgrade: 'yes'
+    update_cache: yes
+
+- name: install elasticsearch
+  become: yes
+  apt:
+    name: elasticsearch
+    state: present
+
+- name: install kibana
+  become: yes
+  apt:
+    update_cache: yes
+    name: kibana
+    state: present
+
+- name: install logstash
+  apt:
+    name: logstash
+    state: present
+

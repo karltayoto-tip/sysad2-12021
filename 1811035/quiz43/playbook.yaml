@@ -1,0 +1,12 @@
+---
+- name: Install elasticstack ubuntu
+  hosts: ubuntu
+
+  roles:
+    - ubuntu-monitor/elk
+
+#- name: Install elasticstack centos
+#hosts: centos
+
+#roles:
+#- centos-monitor/elk
