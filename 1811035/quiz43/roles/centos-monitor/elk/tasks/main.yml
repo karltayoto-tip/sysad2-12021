@@ -13,17 +13,17 @@
   dnf:
     update_cache: yes
 
-    #- name: install elasticsearch
-    #become: yes
-    #dnf:
-    #name: elasticsearch
-    #state: present
+- name: install elasticsearch
+  become: yes
+  dnf:
+    name: elasticsearch
+    state: present
 
-    #- name: install kibana
-    #become: yes
-    #dnf:
-    #name: kibana
-    #state: present
+- name: install kibana
+  become: yes
+  dnf:
+    name: kibana
+    state: present
 
 - name: install filebeat
   become: yes
