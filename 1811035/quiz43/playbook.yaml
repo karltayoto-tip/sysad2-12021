@@ -5,8 +5,8 @@
   roles:
     - ubuntu-monitor/elk
 
-#- name: Install elasticstack centos
-#hosts: centos
+- name: Install elasticstack centos
+  hosts: centos
 
-#roles:
-#- centos-monitor/elk
+  roles:
+    - centos-monitor/elk
