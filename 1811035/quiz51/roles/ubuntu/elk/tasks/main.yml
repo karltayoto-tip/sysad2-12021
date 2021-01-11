@@ -1,0 +1,68 @@
+---
+# tasks file for roles/ubuntu/elk
+- name: install python3 python3-pip
+  apt:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: install docker file
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+  register: dockerio
+
+- name: install docker py
+  pip:
+    name: docker.py
+    state: present
+  when: dockerio.changed
+
+- name: pull elasticsearch image
+  docker_image:
+    name: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+
+- name: create network docker
+  docker_network:
+    name: elastic
+
+- name: create container elasticsearch
+  docker_container:
+    name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    state: present
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - name: elastic
+
+- name: kibana image
+  docker_image:
+    name: docker.elastic.co/kibana/kibana:7.10.1
+
+- name: container kibana
+  docker_container:
+    name: kibana
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    state: present
+    ports:
+      - "5601:5601"
+    networks:
+      - name: elastic
+
+- name: logstash image
+  docker_image:
+    name: docker.elastic.co/logstash/logstash:7.10.1
+
+- name: container logstash
+  docker_container:
+    name: logstash
+    image: docker.elastic.co/logstash/logstash:7.10.1
+    state: present
+    ports:
+      - "5044:5044"
+    networks:
+      - name: elastic
