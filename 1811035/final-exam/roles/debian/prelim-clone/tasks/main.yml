@@ -1,0 +1,15 @@
+---
+# tasks file for roles/debian/prelim-clone
+- name: install git in debian
+  become: yes
+  apt:
+    name: git
+    state: present
+    update_cache: yes
+
+- name: clone prelim exam
+  become: yes
+  git:
+    repo: '{{ prelim_clone }}'
+    dest: ./prelim-exam
+    version: prelim-exam

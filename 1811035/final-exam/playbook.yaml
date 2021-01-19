@@ -1,0 +1,52 @@
+---
+- name: include config.yaml
+  hosts: debian
+  tasks:
+    - name: include config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: MOTD for centos and opensuse hosts
+  become: yes
+  hosts:
+    - centos
+    - opensuse
+  tasks:
+    - name: modified MOTD
+      lineinfile:
+        path: /etc/motd
+        line: Ansible Managed by '{{username}}'
+
+- name: MOTD for debian
+  hosts: debian
+  tasks:
+    - name: modified MOTD
+      become: yes
+      command: sh -c 'echo "Ansbile Manage by {{ username }}"> /etc/motd'
+
+- name: pre-requisite to install in debian
+  hosts: debian
+  roles:
+    - debian/prelim-clone
+    - debian/install-nagios
+    - debian/config-nagios
+    - debian/install-vsftpd
+    - debian/config-vsftpd
+
+- name: pre-requisite to install in centos
+  hosts: centos
+  roles:
+    - centos/prelim-clone
+    - centos/install-nagios
+    - centos/config-nagios
+    - centos/install-vsftpd
+    - centos/config-vsftpd
+
+- name: pre-requisite to install in opensuse
+  hosts: opensuse
+  roles:
+    - opensuse/prelims-clone
+    - opensuse/install-nagios
+    - opensuse/config-nagios
+    - opensuse/install-vsftpd
+    - opensuse/config-vsftpd

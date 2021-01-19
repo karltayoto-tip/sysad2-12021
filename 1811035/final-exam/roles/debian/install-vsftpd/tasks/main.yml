@@ -1,0 +1,28 @@
+---
+# tasks file for roles/debian/install-vsftpd
+- name: install vsftpd for debian
+  become: yes
+  apt:
+    name: vsftpd
+    state: present
+    update_cache: yes
+
+- name: installing ufw
+  become: yes
+  apt:
+    name: ufw
+    state: present
+
+- name: state firewalld
+  become: yes
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: start vsftpd service
+  become: yes
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
